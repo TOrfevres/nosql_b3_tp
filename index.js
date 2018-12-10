@@ -21,7 +21,7 @@ const utils = require('./utils');
 const models = require('./models');
 // * NOS ROUTES ***********************************************************************************
 // homepage
-app.all('', (req, res) => {
+app.all('/', (req, res) => {
     res.render('index.html', { title: 'Hello world!' });
 });
 // ************************************************************************************************

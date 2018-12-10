@@ -28,7 +28,7 @@ module.exports = {
         })
     ),
     mark: mongoose.model(
-        'subject',
+        'mark',
         new mongoose.Schema({
             student: String,
             teacher: String,
