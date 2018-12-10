@@ -17,6 +17,7 @@ app.engine('html', function (filePath, options, callback) {
 app.set('views', __dirname + '/views');
 app.set('view engine','html');
 
+const utils = require('./utils');
 const models = require('./models');
 // * NOS ROUTES ***********************************************************************************
 // homepage
