@@ -34,6 +34,8 @@ module.exports = {
             teacher: String,
             subject: String,
             score: Number,
+            scoreMax: Number,
+            coefficient: Number,
             date: Date
         })
     )

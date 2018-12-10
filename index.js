@@ -22,7 +22,7 @@ const models = require('./models');
 // * NOS ROUTES ***********************************************************************************
 // homepage
 app.all('/', (req, res) => {
-    res.render('index.html', { title: 'Hello world!' });
+    res.render('login_register.html', { title: 'Hello world!' });
 });
 // ************************************************************************************************
 
