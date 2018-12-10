@@ -1,5 +1,8 @@
 {
     "server": {
         "port": 3000
+    },
+    "mongoose": {
+        "url": "mongodb://10.44.100.x:27017/db"
     }
 }
