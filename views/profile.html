@@ -2,9 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PROFILE</title>
+    <title>Users</title>
 </head>
-<body>
+    <body>
+       {{#users}}
+            <h1>{{first_name}} {{name}}</h1>
+            <h2> {{pwd}}</h2>
+            <h3> {{mail}}</h3>
+            {{#roles}}
+                <h4>{{.}}</h4>
+            {{/roles}}
+            <span>{{average}}/ 20</span>
+            {{#marks}}
+                <span> {{subject}} avec {{teacher}}</span>
+                <span>{{score}}/{{scoreMax}} ({{coefficient}})</span>
+                <span> le {{date}}</span>
+            {{/marks}}
+       {{/users}}
 
-</body>
+
+    </body>
 </html>
