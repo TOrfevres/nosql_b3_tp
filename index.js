@@ -8,6 +8,7 @@ const app = require('express')();
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+const ObjectId = require('mongodb').ObjectID;
 
 // Set templating engine
 app.engine('html', function (filePath, options, callback) {
@@ -23,6 +24,9 @@ app.set('view engine', 'html');
 const utils = require('./utils');
 const models = require('./models');
 // * NOS ROUTES ***********************************************************************************
+app.all('/', (req, res) => {
+    res.render('home.html', {});
+});
 app.all('/teacher/:id', (req, res) => {
 
 });
@@ -35,74 +39,48 @@ app.all('/subject/:id', (req, res) => {
 
 });
 
-app.get('/student', (req, res) => {
-    models.user.find({roles: ['student']}, (err, students) => {
+app.get('/students', (req, res) => {
+    models.user.find({ roles: ['student'] }, (err, students) => {
         if (err) {
-            console.error(err);
             res.status(500).send('something bad happened :(');
         } else {
-            res.render('students.html', {students: students});
+            res.render('students.html', { students: students });
         }
     })
 });
 
-app.get('/student/:id', (req, res) => {
-    models.user.findById(
-        req.params.id,
-        (error, user) => {
-            if (error) {
-                console.error(error);
-                res.status(500).send('something bad happened :(');
-            } else {
-                models.mark.find(
-                    {student: user._id},
-                    (error, marks) => {
-                        if (error) {
-                            console.error(error);
-                            res.status(500).send('something bad happened :(');
-                        } else {
-                            res.render('student.html', {user: user, marks: marks});
+app.get('/student/:id?', (req, res) => {
+    if (req.params.id){
+        models.user.findById(
+            req.params.id,
+            (error, user) => {
+                if (error) {
+                    res.status(500).send('something bad happened :(');
+                } else {
+                    models.mark.find(
+                        { student: user._id },
+                        (error, marks) => {
+                            if (error) {
+                                res.status(500).send('something bad happened :(');
+                            } else {
+                                res.render('student.html', { user: user, marks: marks });
+                            }
                         }
-                    }
-                );
+                    );
+                }
             }
-        }
-    );
-    // let newMark = new mongoose.mark({
-    //     student: String,
-    //     teacher: String,
-    //     subject: String,
-    //     score: Number,
-    //     scoreMax: Number,
-    //     coefficient: Number,
-    //     date: Date
-    // })
-    // newUser.save((error) => {
-    //     if (error) console.error(error);
-    //     else models.user.findById(
-    //         req.params.id,
-    //         (error, data) => {
-    //             if (error) console.error(error)
-    //             else res.send(data);
-    //         }
-    //     );
-    // })
-
-    // models.user.find({},
-    //     (error, data) => {
-    //         if (error) console.error(error)
-    //         else res.send(data);
-    //     }
-    // );
+        ); 
+    } else {
+        res.render('student.html', { user: {}, marks: {} });
+    }
+    
 });
-app.post('/student/:id', (req, res) => {
-    console.log("OUI", req.body);
-    console.log("non", req.body.action);
+app.post('/student/:id?', (req, res) => {
     if (req.body.action == "UPDATE") {
-        console.log("update");
+        let tempId = req.params.id ? req.params.id : new ObjectId()
         models.user.findOneAndUpdate(
             {
-                _id: req.params.id
+                _id: tempId
             },
             {
                 $set:
@@ -113,25 +91,22 @@ app.post('/student/:id', (req, res) => {
                     mail: req.body.mail
                 }
             },
-            {},
+            { upsert: true },
             (error, user) => {
                 if (error) {
-                    console.error(error)
                     res.status(500).send("something bad happend :'(")
                 } else {
-                    res.redirect('/student/'+req.params.id)
+                    res.redirect('/student/' + tempId)
                 }
             }
         );
     } else if (req.body.action == "DELETE") {
-        console.log("del")
         models.user.remove(
             {
                 _id: req.params.id
             },
             (error, user) => {
                 if (error) {
-                    console.error(error)
                     res.status(500).send("something bad happend :'(")
                 } else {
                     res.redirect('/students/')
@@ -141,7 +116,7 @@ app.post('/student/:id', (req, res) => {
     }
 
 })
- 
+
 
 // ************************************************************************************************
 
@@ -155,7 +130,7 @@ app.listen(config.get('server.port'), () => {
 
 // Connect to MongoDB database with mongoose
 if (config.get('mongoose.url') !== '') {
-    mongoose.connect(config.get('mongoose.url'), {useNewUrlParser: true})
+    mongoose.connect(config.get('mongoose.url'), { useNewUrlParser: true })
         .then(
             () => console.log('Connected to database!'),
             err => console.log('Unable to connect to database...\n', err)
