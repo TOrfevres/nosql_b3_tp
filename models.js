@@ -30,7 +30,6 @@ module.exports = {
         'subject',
         new mongoose.Schema({
             name: String,
-            level: String,
             teachers: [{
                 ref: String,
                 name: String

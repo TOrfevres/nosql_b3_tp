@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Subjects</title>
+</head>
+<body>
+    <h1>SUBJECTS</h1>
+    <form method="POST" action="/uStudent">
+        <div>
+            <label for="name">name</label>
+            <input type="text" id="name" name="name" value="{{name}}">
+        </div>
+        <div>
+            <label for="teachers">Teachers</label>
+            <input type="text" id="teachers" name="teachers" value="{{#teachers}}{{.}} {{/teachers}}">
+        </div>
+        <input type="submit" name="action" value="UPDATE">
+        <input type="submit" name="action" value="DELETE">
+    </form>
+</body>
+</html>
