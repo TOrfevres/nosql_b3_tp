@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>STUDENT</title>
+    <title>TEACHER</title>
 </head>
 <body>
-<h1>STUDENT</h1>
-<form method="POST" action="/uStudent">
+<h1>TEACHER</h1>
+<form method="POST" action="/uTeacher">
+    <input type="hidden" name="_id" value="{{user._id}}">
     <div>
         <label for="first_name">First name</label>
         <input type="text" id="first_name" name="first_name" value="{{first_name}}">
@@ -27,15 +28,16 @@
         <label for="roles">Roles</label>
         <input type="text" id="roles" name="roles" value="{{#roles}}{{.}} {{/roles}}">
     </div>
+    <div>
+        <label for="subject">Subject</label>
+        <select id="subject" name="subject">
+            {{#subjects}}
+            <option value="{{_id}}">{{name}}</option>
+            {{/subjects}}
+        </select>
+    </div>
     <input type="submit" name="action" value="UPDATE">
     <input type="submit" name="action" value="DELETE">
 </form>
-{{#marks}}
-<div>
-    <h2><span>{{subject}}</span> avec {{teacher}}</h2>
-    <p>{{score}}/{{scoreMax}} <span>({{coefficient}})</span></p>
-    <p>le {{date}}</p>
-</div>
-{{/marks}}
 </body>
 </html>
