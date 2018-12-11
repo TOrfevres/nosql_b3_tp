@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>STUDENTS</title>
+</head>
+<body>
+<h1>STUDENTS</h1>
+{{#students}}
+<div>
+    <h2>{{first_name}} {{name}}</h2>
+    <p><span>Password:</span> {{pwd}}</p>
+    <p><span>Mail:</span> {{mail}}</p>
+    <h3>Roles:</h3>
+    <ul>
+        {{#roles}}
+        <li>{{.}}</li>
+        {{/roles}}
+    </ul>
+    <p><span>Subject:</span> {{subject}}</p>
+</div>
+{{/users}}
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>STUDENT</title>
+</head>
+<body>
+<h1>STUDENT</h1>
+<form method="POST" action="/uStudent">
+    <div>
+        <label for="first_name">First name</label>
+        <input type="text" id="first_name" name="first_name" value="{{first_name}}">
+    </div>
+    <div>
+        <label for="name">Last name</label>
+        <input type="text" id="name" name="name" value="{{name}}">
+    </div>
+    <div>
+        <label for="pwd">Password</label>
+        <input type="text" id="pwd" name="pwd" value="{{pwd}}">
+    </div>
+    <div>
+        <label for="mail">Mail</label>
+        <input type="text" id="mail" name="mail" value="{{mail}}">
+    </div>
+    <div>
+        <label for="roles">Roles</label>
+        <select id="roles" name="roles" multiple>
+            {{#roles}}
+            <option value="{{.}}"></option>
+            {{/roles}}
+        </select>
+    </div>
+</form>
+{{#marks}}
+<div>
+    <h2><span>{{subject}}</span> avec {{teacher}}</h2>
+    <p>{{score}}/{{scoreMax}} <span>({{coefficient}})</span></p>
+    <p>le {{date}}</p>
+</div>
+{{/marks}}
+</body>
+</html>
