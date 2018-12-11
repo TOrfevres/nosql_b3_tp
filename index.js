@@ -185,6 +185,67 @@ app.get('/student/:id', (req, res) => {
     // );
 });
 
+app.get('/teacher/:id', (req, res) => {
+    models.user.findById(
+        {
+            _id: req.params.id
+        }, (error, user) => {
+            if (error) {
+                console.error(error);
+                res.status(500).send('something bad happened :(');
+            }else {
+                res.render('teacher.html', {user: user, roles: user.roles})
+            }
+        }
+    )
+});
+
+app.get('/teachers', (req, res) => {
+    models.user.find(
+        {roles: ['teacher']},
+        (error, user) => {
+            if (error) {
+                console.error(error);
+                res.status(500).send('something bad happened :(');
+            } else {
+                res.render('teachers.html', {teachers: user})
+            }
+        }
+    )
+});
+
+app.post('/teacher', (req, res) => {
+    models.user.create(
+        {
+            first_name:req.body.first_name,
+            name: req.body.name,
+            pwd: req.body.pwd,
+            mail: req.body.mail,
+            roles: req.body.roles
+        }, (error, user) => {
+            if (error) {
+                console.error(error);
+                res.status(500).send('something bad happened :(');
+            } else {
+                res.render('teacher.html', {user: user, roles: user.roles})
+            }
+        }
+    )
+});
+app.delete('/teacher', (req, res) => {
+    models.user.deleteOne(
+        {name: req.body.name, roles: req.body.roles},
+        (error, user) => {
+            if (error) {
+                console.error(error);
+                res.status(500).send('something bad happened :(');
+            } else {
+                res.render('teacher.html', {user: user, roles: user.roles})
+            }
+        }
+    )
+});
+
 app.post('/student/:id', (req, res) => {
     console.log("OUI", req.body);
     console.log("non", req.body.action);

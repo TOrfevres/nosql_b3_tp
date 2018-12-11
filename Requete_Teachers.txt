@@ -1,0 +1,98 @@
+Pour teachers :
+
+Read :
+    model.user.find({
+        roles: ["teacher"]
+    }).pretty();
+create :
+    model.user.insertOne({
+        first_name:" PRENOM",
+        name: "NOM",
+        pwd: "PWD",
+        mail: "MAIL",
+        roles: ["teacher"]
+        }).pretty();
+
+drop:
+    model.user.deleteOne({
+        name:"NOM",
+        roles:["teacher"]
+    })
+
+
+
+
+user: mongoose.model(
+    'user',
+    new mongoose.Schema({
+        first_name: String,
+        name: String,
+        pwd: String,
+        mail: String,
+        roles: [String]
+    })
+)
+
+
+
+
+app.get('/teacher/:id', (req, res) => {
+    models.user.findById(
+        {
+            _id: req.params.id
+        }, (error, user) => {
+            if (error) {
+                console.error(error);
+                res.status(500).send('something bad happened :(');
+            }else {
+                res.render('teacher.html', {user: user, roles: user.roles})
+            }
+        }
+    )
+});
+
+app.get('/teachers', (req, res) => {
+    models.user.find(
+        {roles: ['teacher']},
+        (error, user) => {
+            if (error) {
+                console.error(error);
+                res.status(500).send('something bad happened :(');
+            } else {
+                res.render('teachers.html', {teachers: user})
+            }
+        }
+    )
+});
+
+app.post('/teacher', (req, res) => {
+    models.user.create(
+        {
+            first_name:req.body.first_name,
+            name: req.body.name,
+            pwd: req.body.pwd,
+            mail: req.body.mail,
+            roles: req.body.roles
+        }, (error, user) => {
+            if (error) {
+                console.error(error);
+                res.status(500).send('something bad happened :(');
+            } else {
+                res.render('teacher.html', {user: user, roles: user.roles})
+            }
+        }
+    )
+});
+app.delete('/teacher', (req, res) => {
+    models.user.deleteOne(
+        {name: req.body.name, roles: req.body.roles},
+        (error, user) => {
+            if (error) {
+                console.error(error);
+                res.status(500).send('something bad happened :(');
+            } else {
+                res.render('teacher.html', {user: user, roles: user.roles})
+            }
+        }
+    )
+});
