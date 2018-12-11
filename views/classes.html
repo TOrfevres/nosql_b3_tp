@@ -6,6 +6,17 @@
 </head>
 <body>
 <h1>CLASSES</h1>
+<form method="POST" action="/cClass">
+    <div>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name">
+    </div>
+    <div>
+        <label for="level">Level</label>
+        <input type="text" id="level" name="level">
+    </div>
+    <input type="submit" name="action" value="CREATE">
+</form>
 {{#classes}}
 <div>
     <h2>Class {{name}}</h2>
