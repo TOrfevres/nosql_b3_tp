@@ -16,6 +16,7 @@ module.exports = {
         new mongoose.Schema({
             name: String,
             level: String,
+            subjects: [String],
             students: [String]
         })
     ),

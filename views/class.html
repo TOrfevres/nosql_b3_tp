@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CLASS</title>
+</head>
+<body>
+<h1>CLASS</h1>
+<form method="POST" action="/uClass">
+    <div>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" value="{{name}}">
+    </div>
+    <div>
+        <label for="level">Level</label>
+        <input type="text" id="level" name="level" value="{{level}}">
+    </div>
+</form>
+{{#students}}
+<ul>
+    <li>
+        <h2>{{first_name}} {{name}}</h2>
+        <p><span>Mail</span>{{mail}}</p>
+    </li>
+</ul>
+{{/students}}
+
+</body>
+</html>
