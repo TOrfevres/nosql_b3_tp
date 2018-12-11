@@ -16,8 +16,14 @@ module.exports = {
         new mongoose.Schema({
             name: String,
             level: String,
-            subjects: [String],
-            students: [String]
+            subjects: [{
+                ref: String,
+                name: String
+            }],
+            students: [{
+                ref: String,
+                name: String
+            }]
         })
     ),
     subject: mongoose.model(
@@ -25,7 +31,10 @@ module.exports = {
         new mongoose.Schema({
             name: String,
             level: String,
-            teachers: [String]
+            teachers: [{
+                ref: String,
+                name: String
+            }]
         })
     ),
     mark: mongoose.model(
