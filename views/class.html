@@ -7,7 +7,7 @@
 <body>
 <h1>CLASS</h1>
 <form method="POST" action="/uClass">
-    {{#classes}}
+    {{#class}}
     <input type="hidden" name="_id" value="{{_id}}">
     <div>
         <label for="name">Name</label>
@@ -17,7 +17,7 @@
         <label for="level">Level</label>
         <input type="text" id="level" name="level" value="{{level}}">
     </div>
-    {{/classes}}
+    {{/class}}
     <input type="submit" name="action" value="UPDATE">
     <input type="submit" name="action" value="DELETE">
 </form>
