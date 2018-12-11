@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 
 const app = require('express')();
 const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 // Set templating engine
@@ -35,13 +35,103 @@ app.all('/subject/:id', (req, res) => {
 
 });
 
+app.all('/notes', (req, res) => {
+    let new_marks = [];
+    for (let i = 0; i < 10; i++) {
+        new_marks.push(new models.mark({
+            student: {
+                ref: '5c0f8de01d5c6e28ac74348d',
+                name: 'Théodore Orfèvres'
+            },
+            teacher: null,
+            subject: null,
+            score: Math.round(Math.random() * 20),
+            score_max: 20,
+            coefficient: Math.round(Math.random() * 2 + 1),
+            date: Date.now()
+        }));
+    }
+    new_marks.forEach(m => {
+        m.save(err => {
+            if (err) console.error(err);
+        });
+    });
+    res.send('OK')
+});
+
 app.get('/student', (req, res) => {
     models.user.find({roles: ['student']}, (err, students) => {
         if (err) {
             console.error(err);
             res.status(500).send('something bad happened :(');
         } else {
-            res.render('students.html', {students: students});
+            models.mark.aggregate([
+                {
+                    $project: {
+                        _id: '$student.ref',
+                        coefficient: true,
+                        score: {
+                            $multiply: [
+                                {
+                                    $divide: [
+                                        {
+                                            $multiply: [
+                                                20,
+                                                '$score'
+                                            ]
+                                        },
+                                        '$score_max'
+                                    ]
+                                },
+                                '$coefficient'
+                            ]
+                        }
+                    }
+                }, {
+                    $group: {
+                        _id: '$_id',
+                        sum_score: {
+                            $sum: '$score'
+                        },
+                        sum_coefficient: {
+                            $sum: '$coefficient'
+                        }
+                    }
+                }, {
+                    $project: {
+                        _id: true,
+                        average: {
+                            $divide: [
+                                {
+                                    $trunc: {
+                                        $multiply: [
+                                            {
+                                                $divide: [
+                                                    '$sum_score',
+                                                    '$sum_coefficient'
+                                                ]
+                                            },
+                                            100
+                                        ]
+                                    }
+                                },
+                                100
+                            ]
+                        }
+                    }
+                }
+            ], (err, results) => {
+                if (err) {
+                    console.error(err);
+                    res.status(500).send('something bad happened :(');
+                } else {
+                    results.forEach(r => {
+                        let index = students.findIndex(s => s._id.toString() === r._id);
+                        if (index !== -1) students[index].average = r.average;
+                    });
+                    res.render('students.html', {students: students});
+                }
+            });
         }
     })
 });
@@ -68,15 +158,14 @@ app.get('/student/:id', (req, res) => {
             }
         }
     );
-    // let newMark = new mongoose.mark({
-    //     student: String,
-    //     teacher: String,
-    //     subject: String,
-    //     score: Number,
-    //     scoreMax: Number,
-    //     coefficient: Number,
-    //     date: Date
-    // })
+
+    // let newUser = new models.user({
+    //     first_name: 'Kirian',
+    //     name: 'Caumes',
+    //     pwd: 'oui',
+    //     mail: 'kiki@mail.com',
+    //     roles: ['student']
+    // });
     // newUser.save((error) => {
     //     if (error) console.error(error);
     //     else models.user.findById(
@@ -95,53 +184,46 @@ app.get('/student/:id', (req, res) => {
     //     }
     // );
 });
+
 app.post('/student/:id', (req, res) => {
     console.log("OUI", req.body);
     console.log("non", req.body.action);
-    if (req.body.action == "UPDATE") {
+    if (req.body.action === "UPDATE") {
         console.log("update");
         models.user.findOneAndUpdate(
             {
                 _id: req.params.id
-            },
-            {
-                $set:
-                {
+            }, {
+                $set: {
                     first_name: req.body.first_name,
                     name: req.body.name,
                     pwd: req.body.pwd,
                     mail: req.body.mail
                 }
-            },
-            {},
-            (error, user) => {
+            }, {}, (error) => {
                 if (error) {
-                    console.error(error)
-                    res.status(500).send("something bad happend :'(")
+                    console.error(error);
+                    res.status(500).send('something bad happened :(');
                 } else {
-                    res.redirect('/student/'+req.params.id)
+                    res.redirect('/student/' + req.params.id);
                 }
             }
         );
-    } else if (req.body.action == "DELETE") {
-        console.log("del")
+    } else if (req.body.action === "DELETE") {
         models.user.remove(
             {
                 _id: req.params.id
-            },
-            (error, user) => {
+            }, (error) => {
                 if (error) {
-                    console.error(error)
-                    res.status(500).send("something bad happend :'(")
+                    console.error(error);
+                    res.status(500).send('something bad happened :(')
                 } else {
                     res.redirect('/students/')
                 }
             }
         );
     }
-
-})
- 
+});
 
 // ************************************************************************************************
 
