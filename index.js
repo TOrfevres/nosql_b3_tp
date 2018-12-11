@@ -5,6 +5,9 @@ const config = require('config');
 const mongoose = require('mongoose');
 
 const app = require('express')();
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // Set templating engine
 app.engine('html', function (filePath, options, callback) {
@@ -49,8 +52,7 @@ app.all('/class/:id', (req, res) => {
 app.all('/subject/:id', (req, res) => {
 
 })
-app.all('/student/:id', (req, res) => {
-    console.log("OUI", req.query);
+app.get('/student/:id', (req, res) => {
     models.user.findById(
         req.params.id,
         (error, user) => {
@@ -58,9 +60,10 @@ app.all('/student/:id', (req, res) => {
                 console.error(error)
                 res.status(500).send("something bad happend :'(")
             } else {
-                models.mark.find({
-                    student: user._id
-                },
+                models.mark.find(
+                    {
+                        student: user._id
+                    },
                     (error, marks) => {
                         if (error) {
                             console.error(error)
@@ -73,13 +76,15 @@ app.all('/student/:id', (req, res) => {
             }
         }
     );
-    // let newUser = new models.user({
-    //     first_name: "Kirian",
-    //     name: "Caumes",
-    //     pwd: "oui",
-    //     mail: "kiki@mail.com",
-    //     roles: ["student"]
-    // });
+    // let newMark = new mongoose.mark({
+    //     student: String,
+    //     teacher: String,
+    //     subject: String,
+    //     score: Number,
+    //     scoreMax: Number,
+    //     coefficient: Number,
+    //     date: Date
+    // })
     // newUser.save((error) => {
     //     if (error) console.error(error);
     //     else models.user.findById(
@@ -99,7 +104,53 @@ app.all('/student/:id', (req, res) => {
     // );
 
 });
+app.post('/student/:id', (req, res) => {
+    console.log("OUI", req.body);
+    console.log("non", req.body.action);
+    if (req.body.action == "UPDATE") {
+        console.log("update");
+        models.user.findOneAndUpdate(
+            {
+                _id: req.params.id
+            },
+            {
+                $set:
+                {
+                    first_name: req.body.first_name,
+                    name: req.body.name,
+                    pwd: req.body.pwd,
+                    mail: req.body.mail
+                }
+            },
+            {},
+            (error, user) => {
+                if (error) {
+                    console.error(error)
+                    res.status(500).send("something bad happend :'(")
+                } else {
+                    res.redirect('/student/'+req.params.id)
+                }
+            }
+        );
+    } else if (req.body.action == "DELETE") {
+        console.log("del")
+        models.user.remove(
+            {
+                _id: req.params.id
+            },
+            (error, user) => {
+                if (error) {
+                    console.error(error)
+                    res.status(500).send("something bad happend :'(")
+                } else {
+                    res.redirect('/students/')
+                }
+            }
+        );
+    }
 
+})
+ 
 
 // ************************************************************************************************
 

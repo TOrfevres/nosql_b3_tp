@@ -6,8 +6,8 @@
 </head>
 <body>
 <h1>STUDENT</h1>
-<form method="POST" action="/uStudent">
-    {{#user}}
+{{#user}}
+<form method="POST" action="/student/{{_id}}">
     <input type="hidden" name="_id" value="{{_id}}">
     <div>
         <label for="first_name">First name</label>
@@ -25,10 +25,10 @@
         <label for="mail">Mail</label>
         <input type="text" id="mail" name="mail" value="{{mail}}">
     </div>
-    {{/user}}
     <input type="submit" name="action" value="UPDATE">
     <input type="submit" name="action" value="DELETE">
 </form>
+{{/user}}
 {{#marks}}
 <div>
     <h2><span>{{subject}}</span> avec {{teacher}}</h2>
