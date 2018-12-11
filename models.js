@@ -52,7 +52,7 @@ module.exports = {
                 name: String
             },
             score: Number,
-            scoreMax: Number,
+            score_max: Number,
             coefficient: Number,
             date: Date
         })
