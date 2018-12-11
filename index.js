@@ -20,10 +20,22 @@ app.set('view engine','html');
 const utils = require('./utils');
 const models = require('./models');
 // * NOS ROUTES ***********************************************************************************
+
 // homepage
 app.all('/', (req, res) => {
     res.render('login_register.html', { title: 'Hello world!' });
 });
+
+// profile
+app.all('/profile', (req, res) => {
+    res.render('profile.html', {});
+});
+
+// admin panel
+app.all('admin', (req, res) => {
+    res.render('admin.html', {});
+});
+
 // ************************************************************************************************
 
 // Run app
