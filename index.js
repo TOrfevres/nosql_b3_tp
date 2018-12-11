@@ -20,56 +20,48 @@ app.set('view engine', 'html');
 const utils = require('./utils');
 const models = require('./models');
 // * NOS ROUTES ***********************************************************************************
-
-// homepage
-app.all('/', (req, res) => {
-    res.render('login_register.html', { title: 'Hello world!' });
-});
-
-// profile
-app.all('/profile', (req, res) => {
-    res.render('profile.html', {});
-});
-
-// admin panel
-app.all('admin', (req, res) => {
-    res.render('admin.html', {});
-});
-
-// ************************************************************************************************
-
-
-// * NOSQL ROUTES *********************************************************************************
 app.all('/teacher/:id', (req, res) => {
 
-})
+});
+
 app.all('/class/:id', (req, res) => {
 
-})
+});
+
 app.all('/subject/:id', (req, res) => {
 
-})
-app.all('/student/:id', (req, res) => {
-    console.log("OUI", req.query);
+});
+
+app.get('/student', (req, res) => {
+    models.user.find({roles: ['student']}, (err, students) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('something bad happened :(');
+        } else {
+            res.render('students.html', {students: students});
+        }
+    })
+});
+
+app.get('/student/:id', (req, res) => {
     models.user.findById(
         req.params.id,
         (error, user) => {
             if (error) {
-                console.error(error)
-                res.status(500).send("something bad happend :'(")
+                console.error(error);
+                res.status(500).send('something bad happened :(');
             } else {
-                models.mark.find({
-                    student: user._id
-                },
+                models.mark.find(
+                    {student: user._id},
                     (error, marks) => {
                         if (error) {
-                            console.error(error)
-                            res.status(500).send("something bad happend :'(")
+                            console.error(error);
+                            res.status(500).send('something bad happened :(');
                         } else {
-                            res.render('student.html', { user: user, marks: marks })
-                            //res.send(data)  
+                            res.render('student.html', {user: user, marks: marks});
                         }
-                    })
+                    }
+                );
             }
         }
     );
@@ -97,7 +89,6 @@ app.all('/student/:id', (req, res) => {
     //         else res.send(data);
     //     }
     // );
-
 });
 
 
@@ -113,7 +104,7 @@ app.listen(config.get('server.port'), () => {
 
 // Connect to MongoDB database with mongoose
 if (config.get('mongoose.url') !== '') {
-    mongoose.connect(config.get('mongoose.url'), { useNewUrlParser: true })
+    mongoose.connect(config.get('mongoose.url'), {useNewUrlParser: true})
         .then(
             () => console.log('Connected to database!'),
             err => console.log('Unable to connect to database...\n', err)
