@@ -7,6 +7,8 @@
 <body>
 <h1>CLASS</h1>
 <form method="POST" action="/uClass">
+    {{#classes}}
+    <input type="hidden" name="_id" value="{{_id}}">
     <div>
         <label for="name">Name</label>
         <input type="text" id="name" name="name" value="{{name}}">
@@ -15,15 +17,17 @@
         <label for="level">Level</label>
         <input type="text" id="level" name="level" value="{{level}}">
     </div>
+    {{/classes}}
+    <input type="submit" name="action" value="UPDATE">
+    <input type="submit" name="action" value="DELETE">
 </form>
-{{#students}}
 <ul>
+    {{#students}}
     <li>
-        <h2>{{first_name}} {{name}}</h2>
-        <p><span>Mail</span>{{mail}}</p>
+        <h2>{{name}}</h2>
     </li>
+    {{/students}}
 </ul>
-{{/students}}
 
 </body>
 </html>
