@@ -6,6 +6,36 @@
 </head>
 <body>
 <h1>STUDENTS</h1>
+<form method="POST" action="/cTeacher">
+    {{#user}}
+    <input type="hidden" name="_id" value="{{_id}}">
+    <div>
+        <label for="first_name">First name</label>
+        <input type="text" id="first_name" name="first_name">
+    </div>
+    <div>
+        <label for="name">Last name</label>
+        <input type="text" id="name" name="name">
+    </div>
+    <div>
+        <label for="pwd">Password</label>
+        <input type="text" id="pwd" name="pwd">
+    </div>
+    <div>
+        <label for="mail">Mail</label>
+        <input type="text" id="mail" name="mail">
+    </div>
+    {{/user}}
+    <div>
+        <label for="subject">Subject</label>
+        <select id="subject" name="subject">
+            {{#subjects}}
+            <option value="{{_id}}">{{name}}</option>
+            {{/subjects}}
+        </select>
+    </div>
+    <input type="submit" name="action" value="CREATE">
+</form>
 {{#teachers}}
 <div>
     <h2>{{first_name}} {{name}}</h2>

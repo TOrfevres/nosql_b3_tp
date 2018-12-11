@@ -7,7 +7,8 @@
 <body>
 <h1>TEACHER</h1>
 <form method="POST" action="/uTeacher">
-    <input type="hidden" name="_id" value="{{user._id}}">
+    {{#user}}
+    <input type="hidden" name="_id" value="{{_id}}">
     <div>
         <label for="first_name">First name</label>
         <input type="text" id="first_name" name="first_name" value="{{first_name}}">
@@ -24,10 +25,7 @@
         <label for="mail">Mail</label>
         <input type="text" id="mail" name="mail" value="{{mail}}">
     </div>
-    <div>
-        <label for="roles">Roles</label>
-        <input type="text" id="roles" name="roles" value="{{#roles}}{{.}} {{/roles}}">
-    </div>
+    {{/user}}
     <div>
         <label for="subject">Subject</label>
         <select id="subject" name="subject">
