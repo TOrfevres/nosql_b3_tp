@@ -2,7 +2,7 @@ TEMPLATES:
 • tous les étudiants (CR-D)
 • tous les professeurs (CR-D)
 • toutes les classes (CR-D)
-• toutes les classes pour une matière
+• toutes les classes pour une matière (-RUD)
 • toutes les matières (CR-D)
 • toutes les notes pour un étudiant (-RUD)
 • toutes les classes pour un professeurs (-RUD)
