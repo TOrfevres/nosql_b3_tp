@@ -10,18 +10,19 @@
 <div>
     <h2>Class {{name}}</h2>
     <p><span>Level:</span> {{level}}</p>
-    <h3>Students in the class:</h3>
-    <ul>
-        {{#students}}
-        <li>{{first_name}} {{name}}</li>
-        {{/students}}
-    </ul>
     <h3>Subjects given:</h3>
     <ul>
         {{#subjects}}
-        <li>{{name}} ({{level}})</li>
+        <li>{{name}}</li>
         {{/subjects}}
     </ul>
+    <h3>Students in the class:</h3>
+    <ul>
+        {{#students}}
+        <li>{{name}}</li>
+        {{/students}}
+    </ul>
 </div>
+{{/classes}}
 </body>
 </html>
