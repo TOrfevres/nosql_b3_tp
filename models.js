@@ -39,9 +39,18 @@ module.exports = {
     mark: mongoose.model(
         'mark',
         new mongoose.Schema({
-            student: String,
-            teacher: String,
-            subject: String,
+            student: {
+                ref: String,
+                name: String
+            },
+            teacher: {
+                ref: String,
+                name: String
+            },
+            subject: {
+                ref: String,
+                name: String
+            },
             score: Number,
             scoreMax: Number,
             coefficient: Number,
