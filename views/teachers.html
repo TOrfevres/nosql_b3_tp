@@ -47,7 +47,12 @@
         <li>{{.}}</li>
         {{/roles}}
     </ul>
-    <p><span>Subject:</span> {{subject}}</p>
+    <h3>Subject:</h3>
+    <ul>
+        {{#subjects}}
+        <li>{{name}}</li>
+        {{/subjects}}
+    </ul>
 </div>
 {{/teachers}}
 </body>
