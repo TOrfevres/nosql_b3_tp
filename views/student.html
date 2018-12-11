@@ -25,11 +25,7 @@
     </div>
     <div>
         <label for="roles">Roles</label>
-        <select id="roles" name="roles" multiple>
-            {{#roles}}
-            <option value="{{.}}"></option>
-            {{/roles}}
-        </select>
+        <input type="text" id="roles" name="roles" value="{{#roles}}{{.}} {{/roles}}">
     </div>
 </form>
 {{#marks}}
