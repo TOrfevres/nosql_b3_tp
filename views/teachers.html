@@ -1,59 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>TEACHERS</title>
 </head>
+
 <body>
-<h1>TEACHERS</h1>
-<form method="POST" action="/cTeacher">
-    {{#user}}
-    <input type="hidden" name="_id" value="{{_id}}">
+    <h1>TEACHERS</h1>
+    <a href="/">Go back to Home</a><br>
+    <form method="POST" action="/teacher/">
+        <!-- <input type="hidden" name="_id" value="{{_id}}"> -->
+        <div>
+            <label for="first_name">First name</label>
+            <input type="text" id="first_name" name="first_name">
+        </div>
+        <div>
+            <label for="name">Last name</label>
+            <input type="text" id="name" name="name">
+        </div>
+        <div>
+            <label for="pwd">Password</label>
+            <input type="text" id="pwd" name="pwd">
+        </div>
+        <div>
+            <label for="mail">Mail</label>
+            <input type="text" id="mail" name="mail">
+        </div>
+
+        <div>
+            <label for="subject">Subject</label>
+            <select id="subject" name="subject">
+                {{#subjects}}
+                <option value="{{_id}}">{{name}}</option>
+                {{/subjects}}
+            </select>
+        </div>
+        <input type="submit" name="action" value="CREATE">
+    </form>
+    {{#teachers}}
     <div>
-        <label for="first_name">First name</label>
-        <input type="text" id="first_name" name="first_name">
-    </div>
-    <div>
-        <label for="name">Last name</label>
-        <input type="text" id="name" name="name">
-    </div>
-    <div>
-        <label for="pwd">Password</label>
-        <input type="text" id="pwd" name="pwd">
-    </div>
-    <div>
-        <label for="mail">Mail</label>
-        <input type="text" id="mail" name="mail">
-    </div>
-    {{/user}}
-    <div>
-        <label for="subject">Subject</label>
-        <select id="subject" name="subject">
+        <h2><a href="/teacher/{{_id}}">> {{first_name}} {{name}}</a></h2>
+        <p><span>Password:</span> {{pwd}}</p>
+        <p><span>Mail:</span> {{mail}}</p>
+        <h3>Roles:</h3>
+        <ul>
+            {{#roles}}
+            <li>{{.}}</li>
+            {{/roles}}
+        </ul>
+        <h3>Subject:</h3>
+        <ul>
             {{#subjects}}
-            <option value="{{_id}}">{{name}}</option>
+            <li>{{name}}</li>
             {{/subjects}}
-        </select>
+        </ul>
     </div>
-    <input type="submit" name="action" value="CREATE">
-</form>
-{{#teachers}}
-<div>
-    <h2>{{first_name}} {{name}}</h2>
-    <p><span>Password:</span> {{pwd}}</p>
-    <p><span>Mail:</span> {{mail}}</p>
-    <h3>Roles:</h3>
-    <ul>
-        {{#roles}}
-        <li>{{.}}</li>
-        {{/roles}}
-    </ul>
-    <h3>Subject:</h3>
-    <ul>
-        {{#subjects}}
-        <li>{{name}}</li>
-        {{/subjects}}
-    </ul>
-</div>
-{{/teachers}}
+    {{/teachers}}
 </body>
+
 </html>

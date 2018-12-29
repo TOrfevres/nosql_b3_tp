@@ -1,40 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>STUDENT</title>
 </head>
+
 <body>
-<h1>STUDENT</h1>
-{{#user}}
-<form method="POST" action="/student/{{_id}}">
-    <input type="hidden" name="_id" value="{{_id}}">
+    <h1>STUDENT</h1>
+    <a href="/student">Go back to Students</a><br>
+    {{#user}}
+    <form method="POST" action="/student/{{_id}}">
+        <input type="hidden" name="_id" value="{{_id}}">
+        <div>
+            <label for="first_name">First name</label>
+            <input type="text" id="first_name" name="first_name" value="{{first_name}}">
+        </div>
+        <div>
+            <label for="name">Last name</label>
+            <input type="text" id="name" name="name" value="{{name}}">
+        </div>
+        <div>
+            <label for="pwd">Password</label>
+            <input type="text" id="pwd" name="pwd" value="{{pwd}}">
+        </div>
+        <div>
+            <label for="mail">Mail</label>
+            <input type="text" id="mail" name="mail" value="{{mail}}">
+        </div>
+        <input type="submit" name="action" value="UPDATE">
+        <input type="submit" name="action" value="DELETE">
+    </form>
+    {{/user}}
+    {{#marks}}
     <div>
-        <label for="first_name">First name</label>
-        <input type="text" id="first_name" name="first_name" value="{{first_name}}">
+        <h2><span>{{subject.name}}</span> avec {{teacher.name}}</h2>
+        <p>{{score}}/{{score_max}} <span>({{coefficient}})</span></p>
+        <p>le {{date}}</p>
     </div>
-    <div>
-        <label for="name">Last name</label>
-        <input type="text" id="name" name="name" value="{{name}}">
-    </div>
-    <div>
-        <label for="pwd">Password</label>
-        <input type="text" id="pwd" name="pwd" value="{{pwd}}">
-    </div>
-    <div>
-        <label for="mail">Mail</label>
-        <input type="text" id="mail" name="mail" value="{{mail}}">
-    </div>
-    <input type="submit" name="action" value="UPDATE">
-    <input type="submit" name="action" value="DELETE">
-</form>
-{{/user}}
-{{#marks}}
-<div>
-    <h2><span>{{subject.name}}</span> avec {{teacher.name}}</h2>
-    <p>{{score}}/{{score_max}} <span>({{coefficient}})</span></p>
-    <p>le {{date}}</p>
-</div>
-{{/marks}}
+    {{/marks}}
 </body>
+
 </html>

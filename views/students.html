@@ -1,43 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>STUDENTS</title>
 </head>
+
 <body>
-<h1>STUDENTS</h1>
-<form method="POST" action="/student/">
+    <h1>STUDENTS</h1>
+    <a href="/">Go back to Home</a>
+    <form method="POST" action="/student/"><br>
+        <div>
+            <label for="first_name">First name</label>
+            <input type="text" id="first_name" name="first_name">
+        </div>
+        <div>
+            <label for="name">Last name</label>
+            <input type="text" id="name" name="name">
+        </div>
+        <div>
+            <label for="pwd">Password</label>
+            <input type="text" id="pwd" name="pwd">
+        </div>
+        <div>
+            <label for="mail">Mail</label>
+            <input type="text" id="mail" name="mail">
+        </div>
+        <input type="submit" name="action" value="CREATE">
+    </form>
+    {{#students}}
     <div>
-        <label for="first_name">First name</label>
-        <input type="text" id="first_name" name="first_name">
+        <h2><a href="student/{{_id}}">> {{first_name}} {{name}}</a></h2>
+        <p><span>Password:</span> {{pwd}}</p>
+        <p><span>Mail:</span> {{mail}}</p>
+        <h3>Roles:</h3>
+        <ul>
+            {{#roles}}
+            <li>{{.}}</li>
+            {{/roles}}
+        </ul>
+        <p><span>Average:</span> {{average}} / 20</p>
     </div>
-    <div>
-        <label for="name">Last name</label>
-        <input type="text" id="name" name="name">
-    </div>
-    <div>
-        <label for="pwd">Password</label>
-        <input type="text" id="pwd" name="pwd">
-    </div>
-    <div>
-        <label for="mail">Mail</label>
-        <input type="text" id="mail" name="mail">
-    </div>
-    <input type="submit" name="action" value="CREATE">
-</form>
-{{#students}}
-<div>
-    <h2>{{first_name}} {{name}}</h2>
-    <p><span>Password:</span> {{pwd}}</p>
-    <p><span>Mail:</span> {{mail}}</p>
-    <h3>Roles:</h3>
-    <ul>
-        {{#roles}}
-        <li>{{.}}</li>
-        {{/roles}}
-    </ul>
-    <p><span>Average:</span> {{average}} / 20</p>
-</div>
-{{/students}}
+    {{/students}}
 </body>
+
 </html>

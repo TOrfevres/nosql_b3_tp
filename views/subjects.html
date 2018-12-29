@@ -6,17 +6,30 @@
 </head>
 <body>
     <h1>SUBJECTS</h1>
-    <form method="POST" action="/uStudent">
+    <a href="/">Go back to Home</a><br>
+    <form method="POST" action="/subject/">
         <div>
-            <label for="name">name</label>
+            <label for="name">Name</label>
             <input type="text" id="name" name="name" value="{{name}}">
         </div>
-        <div>
+        <!-- <div>
             <label for="teachers">Teachers</label>
             <input type="text" id="teachers" name="teachers" value="{{#teachers}}{{.}} {{/teachers}}">
-        </div>
-        <input type="submit" name="action" value="UPDATE">
-        <input type="submit" name="action" value="DELETE">
+        </div>         -->
+        <input type="submit" name="action" value="CREATE">
+        <!-- <input type="submit" name="action" value="UPDATE">
+        <input type="submit" name="action" value="DELETE"> -->
     </form>
+    {{#subjects}}
+    <div>
+        <h2><a href="/subject/{{_id}}">> {{name}}</a></h2>
+        <h3>Teachers:</h3>
+        <ul>
+            {{#teachers}}
+            <li>{{name}}</li>
+            {{/teachers}}
+        </ul>
+    </div>
+    {{/subjects}} 
 </body>
 </html>

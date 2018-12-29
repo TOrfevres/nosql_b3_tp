@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Subjects</title>
+</head>
+<body>
+    <h1>SUBJECTS</h1>
+    <a href="/subject">Go back to Subjects</a><br>
+    {{#subject}}
+    <form method="POST" action="/subject/{{_id}}">
+        <input type="hidden" name="_id" value="{{_id}}">
+        <div>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" value="{{name}}">
+        </div>
+        <div>
+            <label for="teachers">Teachers</label>
+            <input type="text" id="teachers" name="teachers" value="{{#teachers}}{{.}} {{/teachers}}">
+        </div>        
+        <!-- <input type="submit" name="action" value="CREATE"> -->
+        <input type="submit" name="action" value="UPDATE">
+        <input type="submit" name="action" value="DELETE">
+    </form>
+    {{/subject}}
+</body>
+</html>

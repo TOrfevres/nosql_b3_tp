@@ -29,67 +29,67 @@ app.all('/', (req, res) => {
     res.render('home.html', {});
 });
 
-//Teacher Routes 
-app.get('/teacher/:id', (req, res) => {
-    models.user.findById(
-        {
-            _id: req.params.id
-        }, (error, user) => {
-            if (error) {
-                console.error(error);
-                res.status(500).send('something bad happened :(');
-            } else {
-                res.render('teacher.html', { user: user, roles: user.roles })
-            }
-        }
-    )
-});
+//Teacher Routes (By Antoine)
+// app.get('/teacher/:id', (req, res) => {
+//     models.user.findById(
+//         {
+//             _id: req.params.id
+//         }, (error, user) => {
+//             if (error) {
+//                 console.error(error);
+//                 res.status(500).send('something bad happened :(');
+//             } else {
+//                 res.render('teacher.html', { user: user, roles: user.roles })
+//             }
+//         }
+//     )
+// });
 
-app.get('/teachers', (req, res) => {
-    models.user.find(
-        { roles: ['teacher'] },
-        (error, user) => {
-            if (error) {
-                console.error(error);
-                res.status(500).send('something bad happened :(');
-            } else {
-                res.render('teachers.html', { teachers: user })
-            }
-        }
-    )
-});
+// app.get('/teachers', (req, res) => {
+//     models.user.find(
+//         { roles: ['teacher'] },
+//         (error, user) => {
+//             if (error) {
+//                 console.error(error);
+//                 res.status(500).send('something bad happened :(');
+//             } else {
+//                 res.render('teachers.html', { teachers: user })
+//             }
+//         }
+//     )
+// });
 
-app.post('/teacher', (req, res) => {
-    models.user.create(
-        {
-            first_name: req.body.first_name,
-            name: req.body.name,
-            pwd: req.body.pwd,
-            mail: req.body.mail,
-            roles: ["teacher"],
-        }, (error, user) => {
-            if (error) {
-                console.error(error);
-                res.status(500).send('something bad happened :(');
-            } else {
-                res.render('teacher.html', { user: user, roles: user.roles })
-            }
-        }
-    )
-});
-app.delete('/teacher', (req, res) => {
-    models.user.deleteOne(
-        { name: req.body.name, roles: req.body.roles },
-        (error, user) => {
-            if (error) {
-                console.error(error);
-                res.status(500).send('something bad happened :(');
-            } else {
-                res.render('teacher.html', { user: user, roles: user.roles })
-            }
-        }
-    )
-});
+// app.post('/teacher', (req, res) => {
+//     models.user.create(
+//         {
+//             first_name: req.body.first_name,
+//             name: req.body.name,
+//             pwd: req.body.pwd,
+//             mail: req.body.mail,
+//             roles: ["teacher"],
+//         }, (error, user) => {
+//             if (error) {
+//                 console.error(error);
+//                 res.status(500).send('something bad happened :(');
+//             } else {
+//                 res.render('teacher.html', { user: user, roles: user.roles })
+//             }
+//         }
+//     )
+// });
+// app.delete('/teacher', (req, res) => {
+//     models.user.deleteOne(
+//         { name: req.body.name, roles: req.body.roles },
+//         (error, user) => {
+//             if (error) {
+//                 console.error(error);
+//                 res.status(500).send('something bad happened :(');
+//             } else {
+//                 res.render('teacher.html', { user: user, roles: user.roles })
+//             }
+//         }
+//     )
+// });
 
 // app.all('/teacher/:id', (req, res) => {
 
@@ -231,7 +231,7 @@ app.get('/student/:id?', (req, res) => {
 });
 
 app.post('/student/:id?', (req, res) => {
-    if (req.body.action === "UPDATE" || req.body.action === "CREATE" ) {
+    if (req.body.action === "UPDATE" || req.body.action === "CREATE") {
         let tempId = req.params.id ? req.params.id : new ObjectId()
         models.user.findOneAndUpdate(
             {
@@ -262,13 +262,158 @@ app.post('/student/:id?', (req, res) => {
                 if (error) {
                     res.status(500).send("something bad happend :'(")
                 } else {
-                    res.redirect('/students/')
+                    res.redirect('/student/')
                 }
             }
         );
     }
 });
 
+
+//Teachers Routes 
+app.get('/teacher', (req, res) => {
+    //TODO : link to subjects
+    models.user.find(
+        { roles: ['teacher'] },
+        (error, user) => {
+            if (error) {
+                console.error(error);
+                res.status(500).send('something bad happened :(');
+            } else {
+                res.render('teachers.html', { teachers: user })
+            }
+        }
+    )
+});
+
+app.get('/teacher/:id?', (req, res) => {
+    if (req.params.id) {
+        models.user.findById(
+            req.params.id,
+            (error, user) => {
+                if (error) {
+                    res.status(500).send('something bad happened :(');
+                } else {
+                    models.mark.find(
+                        { teacher: user._id },
+                        (error, marks) => {
+                            if (error) {
+                                res.status(500).send('something bad happened :(');
+                            } else {
+                                res.render('teacher.html', { user: user, marks: marks });
+                            }
+                        }
+                    );
+                }
+            }
+        );
+    }
+});
+
+app.post('/teacher/:id?', (req, res) => {
+    if (req.body.action === "UPDATE" || req.body.action === "CREATE") {
+        let tempId = req.params.id ? req.params.id : new ObjectId()
+        models.user.findOneAndUpdate(
+            {
+                _id: tempId
+            }, {
+                $set: {
+                    first_name: req.body.first_name,
+                    name: req.body.name,
+                    pwd: req.body.pwd,
+                    mail: req.body.mail,
+                    roles: ["teacher"],
+                }
+            },
+            { upsert: true },
+            (error, user) => {
+                if (error) {
+                    res.status(500).send("something bad happend :'(")
+                } else {
+                    res.redirect('/teacher/' + tempId)
+                }
+            }
+        );
+    } else if (req.body.action == "DELETE") {
+        models.user.remove(
+            {
+                _id: req.params.id
+            }, (error) => {
+                if (error) {
+                    res.status(500).send("something bad happend :'(")
+                } else {
+                    res.redirect('/teacher/')
+                }
+            }
+        );
+    }
+});
+
+//Subjects Routes 
+app.get('/subject', (req, res) => {
+    //TODO : link to teachers
+    models.subject.find(
+        {},
+        (error, user) => {
+            if (error) {
+                console.error(error);
+                res.status(500).send('something bad happened :(');
+            } else {
+                res.render('subjects.html', { subjects: user })
+            }
+        }
+    )
+});
+
+app.get('/subject/:id?', (req, res) => {
+    if (req.params.id) {
+        models.subject.findById(
+            req.params.id,
+            (error, subject) => {
+                if (error) {
+                    res.status(500).send('something bad happened :(');
+                } else {
+                    res.render('subject.html', { subject: subject });
+                }
+            }
+        );
+    }
+});
+
+app.post('/subject/:id?', (req, res) => {
+    if (req.body.action === "UPDATE" || req.body.action === "CREATE") {
+        let tempId = req.params.id ? req.params.id : new ObjectId()
+        models.subject.findOneAndUpdate(
+            {
+                _id: tempId
+            }, {
+                $set: {
+                    name: req.body.name,
+                }
+            },
+            { upsert: true },
+            (error, user) => {
+                if (error) {
+                    res.status(500).send("something bad happend :'(")
+                } else {
+                    res.redirect('/subject/' + tempId)
+                }
+            }
+        );
+    } else if (req.body.action == "DELETE") {
+        models.subject.remove(
+            {
+                _id: req.params.id
+            }, (error) => {
+                if (error) {
+                    res.status(500).send("something bad happend :'(")
+                } else {
+                    res.redirect('/subject/')
+                }
+            }
+        );
+    }
+});
 // ************************************************************************************************
 
 // Run app

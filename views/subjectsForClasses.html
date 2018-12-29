@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>all subjets for one class</title>
 </head>
+
 <body>
-<h1>all subjets for one class</h1>
-{{#classes}}
-<div>
-    <h2>{{name}}</h2>
-    <p><span>Level class :</span> {{level}}</p>
-    <h3>Subjects :</h3>
-    <ul>
-        {{#subjects}}
-        <li>{{name}}</li>
-        {{/subjects}}
-    </ul>
-</div>
-{{/classes}}
+    <h1>all subjets for one class</h1>
+    {{#classes}}
+    <div>
+        <h2>{{name}}</h2>
+        <p><span>Level class :</span> {{level}}</p>
+        <h3>Subjects :</h3>
+        <ul>
+            {{#subjects}}
+            <li>{{name}}</li>
+            {{/subjects}}
+        </ul>
+    </div>
+    {{/classes}}
 </body>
+
 </html>
