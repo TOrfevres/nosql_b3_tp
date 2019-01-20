@@ -425,7 +425,25 @@ app.get('/class', (req, res) => {
                console.error(error);
                res.status(500).send('something bad happened :(');
            } else {
-               res.render('classes.html', { classes: _class })
+               models.subject.find(
+                   {},
+                   (error, subject) => {
+                       if (error) {
+                           console.error(error);
+                           res.status(500).send('something bad happened :(');
+                       } else {
+                           models.user.find(
+                               {},
+                               (error, student) => {
+                                   if (error) {
+                                       console.error(error);
+                                       res.status(500).send('something bad happened :(');
+                                   } else {
+                                       res.render('classes.html', {classes: _class, subjects: subject, students: student})
+                                   }
+                               });
+                       }
+                   });
            }
        }
    )
@@ -449,6 +467,18 @@ app.get('/class/:id?', (req, res) => {
 app.post('/class/:id?', (req, res) => {
     if (req.body.action === "UPDATE" || req.body.action === "CREATE") {
         let tempId = req.params.id ? req.params.id : new ObjectId();
+
+        let subjects = [];
+        let students = [];
+
+        req.body['subjects[]'].forEach(e => {
+            subjects.push(JSON.parse(e))
+        });
+
+        req.body['students[]'].forEach(e => {
+            students.push(JSON.parse(e))
+        });
+
         models.class.findOneAndUpdate(
             {
                 _id: tempId
@@ -456,6 +486,8 @@ app.post('/class/:id?', (req, res) => {
                 $set: {
                     name: req.body.name,
                     level: req.body.level,
+                    subjects: subjects,
+                    students: students,
                 }
             },
             { upsert: true },

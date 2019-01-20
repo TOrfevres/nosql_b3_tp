@@ -15,6 +15,22 @@
         <label for="level">Level</label>
         <input type="text" id="level" name="level">
     </div>
+    <div>
+        <label for="subject"></label>
+        <select multiple id="subject" name="subjects[]">
+            {{#subjects}}
+            <option value='{"_id": "{{_id}}", "name": "{{name}}"}'>{{name}}</option>
+            {{/subjects}}
+        </select>
+    </div>
+    <div>
+        <label for="students"></label>
+        <select multiple id="students" name="students[]">
+            {{#students}}
+            <option value='{"_id": "{{_id}}", "name": "{{first_name}} {{name}}"}'>{{first_name}} {{name}}</option>
+            {{/students}}
+        </select>
+    </div>
     <input type="submit" name="action" value="CREATE">
 </form>
 {{#classes}}
@@ -30,7 +46,7 @@
     <h3>Students in the class:</h3>
     <ul>
         {{#students}}
-        <li>{{name}}</li>
+        <li>{{first_name}} {{name}}</li>
         {{/students}}
     </ul>
 </div>

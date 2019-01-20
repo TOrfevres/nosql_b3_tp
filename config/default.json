@@ -1,8 +1,8 @@
 {
-    "server": {
-        "port": 3000
-    },
-    "mongoose": {
-        "url": "mongodb://myUser:mdp@localhost:27017/tp?authSource=admin"
-    }
+  "server": {
+    "port": 3000
+  },
+  "mongoose": {
+    "url": "mongodb://localhost:27017/tp"
+  }
 }
