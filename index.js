@@ -248,7 +248,7 @@ app.post('/student/:id?', (req, res) => {
             { upsert: true },
             (error, user) => {
                 if (error) {
-                    res.status(500).send("something bad happend :'(")
+                    res.status(500).send("something bad happened :'(")
                 } else {
                     res.redirect('/student/' + tempId)
                 }
@@ -260,7 +260,7 @@ app.post('/student/:id?', (req, res) => {
                 _id: req.params.id
             }, (error) => {
                 if (error) {
-                    res.status(500).send("something bad happend :'(")
+                    res.status(500).send("something bad happened :'(")
                 } else {
                     res.redirect('/student/')
                 }
@@ -312,7 +312,7 @@ app.get('/teacher/:id?', (req, res) => {
 
 app.post('/teacher/:id?', (req, res) => {
     if (req.body.action === "UPDATE" || req.body.action === "CREATE") {
-        let tempId = req.params.id ? req.params.id : new ObjectId()
+        let tempId = req.params.id ? req.params.id : new ObjectId();
         models.user.findOneAndUpdate(
             {
                 _id: tempId
@@ -328,7 +328,7 @@ app.post('/teacher/:id?', (req, res) => {
             { upsert: true },
             (error, user) => {
                 if (error) {
-                    res.status(500).send("something bad happend :'(")
+                    res.status(500).send("something bad happened :'(")
                 } else {
                     res.redirect('/teacher/' + tempId)
                 }
@@ -340,7 +340,7 @@ app.post('/teacher/:id?', (req, res) => {
                 _id: req.params.id
             }, (error) => {
                 if (error) {
-                    res.status(500).send("something bad happend :'(")
+                    res.status(500).send("something bad happened :'(")
                 } else {
                     res.redirect('/teacher/')
                 }
@@ -382,7 +382,7 @@ app.get('/subject/:id?', (req, res) => {
 
 app.post('/subject/:id?', (req, res) => {
     if (req.body.action === "UPDATE" || req.body.action === "CREATE") {
-        let tempId = req.params.id ? req.params.id : new ObjectId()
+        let tempId = req.params.id ? req.params.id : new ObjectId();
         models.subject.findOneAndUpdate(
             {
                 _id: tempId
@@ -394,7 +394,7 @@ app.post('/subject/:id?', (req, res) => {
             { upsert: true },
             (error, user) => {
                 if (error) {
-                    res.status(500).send("something bad happend :'(")
+                    res.status(500).send("something bad happened :'(")
                 } else {
                     res.redirect('/subject/' + tempId)
                 }
@@ -406,9 +406,76 @@ app.post('/subject/:id?', (req, res) => {
                 _id: req.params.id
             }, (error) => {
                 if (error) {
-                    res.status(500).send("something bad happend :'(")
+                    res.status(500).send("something bad happened :'(")
                 } else {
                     res.redirect('/subject/')
+                }
+            }
+        );
+    }
+});
+
+
+// Classes Routes
+app.get('/class', (req, res) => {
+   models.class.find(
+       {},
+       (error, _class) => {
+           if (error) {
+               console.error(error);
+               res.status(500).send('something bad happened :(');
+           } else {
+               res.render('classes.html', { classes: _class })
+           }
+       }
+   )
+});
+
+app.get('/class/:id?', (req, res) => {
+    if (req.params.id) {
+        models.class.findById(
+            req.params.id,
+            (error, _class) => {
+                if (error) {
+                    res.status(500).send('something bad happened :(');
+                } else {
+                    res.render('class.html', { class: _class });
+                }
+            }
+        );
+    }
+});
+
+app.post('/class/:id?', (req, res) => {
+    if (req.body.action === "UPDATE" || req.body.action === "CREATE") {
+        let tempId = req.params.id ? req.params.id : new ObjectId();
+        models.class.findOneAndUpdate(
+            {
+                _id: tempId
+            }, {
+                $set: {
+                    name: req.body.name,
+                    level: req.body.level,
+                }
+            },
+            { upsert: true },
+            (error, _class) => {
+                if (error) {
+                    res.status(500).send("something bad happened :'(")
+                } else {
+                    res.redirect('/class/' + tempId)
+                }
+            }
+        );
+    } else if (req.body.action == "DELETE") {
+        models.class.remove(
+            {
+                _id: req.params.id
+            }, (error) => {
+                if (error) {
+                    res.status(500).send("something bad happened :'(")
+                } else {
+                    res.redirect('/class/')
                 }
             }
         );
