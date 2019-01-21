@@ -471,13 +471,22 @@ app.post('/class/:id?', (req, res) => {
         let subjects = [];
         let students = [];
 
-        req.body['subjects[]'].forEach(e => {
-            subjects.push(JSON.parse(e))
-        });
+        if(Array.isArray(req.body['subjects[]'])) {
+            req.body['subjects[]'].forEach(e => {
+                subjects.push(JSON.parse(e))
+            });
+        } else {
+            subjects = JSON.parse(req.body['subjects[]']);
+        }
 
-        req.body['students[]'].forEach(e => {
-            students.push(JSON.parse(e))
-        });
+        if(Array.isArray(req.body['students[]'])) {
+            req.body['students[]'].forEach(e => {
+                students.push(JSON.parse(e))
+            });
+        } else {
+            subjects = JSON.parse(req.body['students[]']);
+        }
+
 
         models.class.findOneAndUpdate(
             {
