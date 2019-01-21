@@ -198,7 +198,7 @@ app.get('/student', (req, res) => {
                         let index = students.findIndex(s => s._id.toString() === r._id);
                         if (index !== -1) students[index].average = r.average;
                     });
-                    console.log(students)
+                    console.log(students);
                     res.render('students.html', { students: students });
                 }
             });
@@ -272,7 +272,6 @@ app.post('/student/:id?', (req, res) => {
 
 //Teachers Routes 
 app.get('/teacher', (req, res) => {
-    //TODO : link to subjects
     models.user.find(
         { roles: ['teacher'] },
         (error, user) => {
@@ -280,7 +279,17 @@ app.get('/teacher', (req, res) => {
                 console.error(error);
                 res.status(500).send('something bad happened :(');
             } else {
-                res.render('teachers.html', { teachers: user })
+                models.subject.find(
+                    {},
+                    (error, subject) => {
+                        if (error) {
+                            console.error(error);
+                            res.status(500).send('something bad happened :(');
+                        } else {
+                            res.render('teachers.html', { teachers: user, subjects: subject });
+                        }
+                    }
+                );
             }
         }
     )
@@ -351,7 +360,6 @@ app.post('/teacher/:id?', (req, res) => {
 
 //Subjects Routes 
 app.get('/subject', (req, res) => {
-    //TODO : link to teachers
     models.subject.find(
         {},
         (error, user) => {

@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>CLASSES</h1>
-<a href="/class">Go back to Home</a><br>
+<a href="/">Go back to Home</a><br>
 <form method="POST" action="/class/">
     <div>
         <label for="name">Name</label>
@@ -17,15 +17,14 @@
         <input type="text" id="level" name="level">
     </div>
     <div>
-        <label for="subject"></label>
+        <label for="subject">Subjects</label><br/>
         <select multiple id="subject" name="subjects[]">
             {{#subjects}}
             <option value='{"ref": "{{_id}}", "name": "{{name}}"}'>{{name}}</option>
             {{/subjects}}
         </select>
     </div>
-    <div>
-        <label for="students"></label>
+        <label for="students">Students</label><br/>
         <select multiple id="students" name="students[]">
             {{#students}}
             <option value='{"ref": "{{_id}}", "name": "{{first_name}} {{name}}"}'>{{first_name}} {{name}}</option>
@@ -36,7 +35,7 @@
 </form>
 {{#classes}}
 <div>
-    <h2>Class {{name}}</h2>
+    <a href="/class/{{_id}}"><h2>> Class {{name}}</h2></a>
     <p><span>Level:</span> {{level}}</p>
     <h3>Subjects given:</h3>
     <ul>
