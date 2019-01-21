@@ -6,13 +6,13 @@
 //OR db.auth("root","root")
 
 //Display Users list
-db.getUsers()
+db.getUsers();
 
 //Create users
 //use admin
 db.createUser(
     {
-        user: "myUser",
+        user: "adminuser",
         pwd: "mdp",
         roles: [
             {
@@ -23,23 +23,27 @@ db.createUser(
     }
 );
 db.createRole(
-    {
-        role: "myRoll",
+    {role: "adminrole",
         privileges: [
             {
-                resource: { db: "tp", collection: "" },
+                resource:
+                    {
+                        db:
+                            "tp",
+                        collection:""
+                    },
                 actions: ["find", "update", "insert", "remove"]
             }
-        ],
+            ],
         roles: [
             {
-                role: "readWrite",
+                role:"readWrite",
                 db: "tp"
             }
         ]
     }
-)
+);
 db.grantRolesToUser(
-    "myUser",
-    ["myRoll"]
-)
+    "adminuser",
+    ["adminrole"]
+);

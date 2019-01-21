@@ -3,6 +3,6 @@
     "port": 3000
   },
   "mongoose": {
-    "url": "mongodb://localhost:27017/tp"
+    "url": "mongodb://adminuser:mdp@10.44.100.66:27017/tp?authSource=admin"
   }
 }
